@@ -355,8 +355,34 @@ BarWidget {
       PanelSeparator {}
 
       // Section: Camera Mode
-      PanelSectionHeader {
-        text: root.t("section.camera_mode")
+      Row {
+        width: parent.width
+        spacing: Style.space(4)
+
+        PanelSectionHeader {
+          text: root.t("section.camera_mode")
+          anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Text {
+          text: "󰋽"
+          color: Qt.darker(Color.foreground, 1.8)
+          font.family: Style.font.family
+          font.pixelSize: Style.font.caption
+          anchors.verticalCenter: parent.verticalCenter
+          opacity: camModeHover.containsMouse ? 1.0 : 0.6
+        }
+
+        MouseArea {
+          id: camModeHover
+          anchors.fill: parent
+          hoverEnabled: true
+        }
+
+        PanelToolTip {
+          visible: camModeHover.containsMouse
+          text: root.t("section.camera_mode_tip")
+        }
       }
 
       Toggle {
@@ -414,8 +440,34 @@ BarWidget {
       PanelSeparator {}
 
       // Section: Automation / Auto Mode
-      PanelSectionHeader {
-        text: root.t("section.auto_mode")
+      Row {
+        width: parent.width
+        spacing: Style.space(4)
+
+        PanelSectionHeader {
+          text: root.t("section.auto_mode")
+          anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Text {
+          text: "󰋽"
+          color: Qt.darker(Color.foreground, 1.8)
+          font.family: Style.font.family
+          font.pixelSize: Style.font.caption
+          anchors.verticalCenter: parent.verticalCenter
+          opacity: autoModeHover.containsMouse ? 1.0 : 0.6
+        }
+
+        MouseArea {
+          id: autoModeHover
+          anchors.fill: parent
+          hoverEnabled: true
+        }
+
+        PanelToolTip {
+          visible: autoModeHover.containsMouse
+          text: root.t("section.auto_mode_tip")
+        }
       }
 
       RowLayout {
@@ -471,8 +523,34 @@ BarWidget {
       PanelSeparator {}
 
       // Section: Audio Mode
-      PanelSectionHeader {
-        text: root.t("section.audio_mode")
+      Row {
+        width: parent.width
+        spacing: Style.space(4)
+
+        PanelSectionHeader {
+          text: root.t("section.audio_mode")
+          anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Text {
+          text: "󰋽"
+          color: Qt.darker(Color.foreground, 1.8)
+          font.family: Style.font.family
+          font.pixelSize: Style.font.caption
+          anchors.verticalCenter: parent.verticalCenter
+          opacity: audioModeHover.containsMouse ? 1.0 : 0.6
+        }
+
+        MouseArea {
+          id: audioModeHover
+          anchors.fill: parent
+          hoverEnabled: true
+        }
+
+        PanelToolTip {
+          visible: audioModeHover.containsMouse
+          text: root.t("section.audio_mode_tip")
+        }
       }
 
       RowLayout {
@@ -518,8 +596,34 @@ BarWidget {
       PanelSeparator {}
 
       // Section: PTZ & Zoom
-      PanelSectionHeader {
-        text: root.t("section.ptz") + " (" + root.zoomVal + "%)"
+      Row {
+        width: parent.width
+        spacing: Style.space(4)
+
+        PanelSectionHeader {
+          text: root.t("section.ptz") + " (" + root.zoomVal + "%)"
+          anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Text {
+          text: "󰋽"
+          color: Qt.darker(Color.foreground, 1.8)
+          font.family: Style.font.family
+          font.pixelSize: Style.font.caption
+          anchors.verticalCenter: parent.verticalCenter
+          opacity: ptzHover.containsMouse ? 1.0 : 0.6
+        }
+
+        MouseArea {
+          id: ptzHover
+          anchors.fill: parent
+          hoverEnabled: true
+        }
+
+        PanelToolTip {
+          visible: ptzHover.containsMouse
+          text: root.t("section.ptz_tip")
+        }
       }
 
       RowLayout {

@@ -23,9 +23,13 @@ var strings = {
     // Panel Header & Sections
     "header.title": "EMEET PIXY",
     "section.camera_mode": "CAMERA MODE",
+    "section.camera_mode_tip": "Camera power and video modes: USB soft-disconnect, hardware privacy shutter, AI face tracking, or idle standby.",
     "section.auto_mode": "AUTOMATION (AUTO MODE)",
+    "section.auto_mode_tip": "Automation rules triggered on calls: Auto-tracking, noise cancellation, and auto-privacy.",
     "section.audio_mode": "MICROPHONE & AUDIO",
+    "section.audio_mode_tip": "Built-in microphone and DSP processing: Mute camera audio and switch noise cancellation presets (NC, Live, Original).",
     "section.ptz": "PTZ & ZOOM CONTROLS",
+    "section.ptz_tip": "Motorized gimbal controls: Horizontal pan, vertical tilt, digital zoom, and center reset.",
     "section.gestures": "GESTURES",
 
     // Camera Modes & Power
@@ -93,9 +97,13 @@ var strings = {
     // Panel Header & Sections
     "header.title": "EMEET PIXY",
     "section.camera_mode": "MODO DE CÁMARA",
+    "section.camera_mode_tip": "Control de alimentación y video: Desconexión por software, obturador físico de privacidad, seguimiento facial por IA o reposo.",
     "section.auto_mode": "AUTOMATIZACIÓN (MODO AUTO)",
+    "section.auto_mode_tip": "Comportamientos automáticos en llamada: Auto-tracking, reducción de ruido y cierre automático del obturador.",
     "section.audio_mode": "MICRÓFONO Y AUDIO",
+    "section.audio_mode_tip": "Micrófono integrado y procesamiento DSP: Silenciar entrada de audio y alternar reducción de ruido (NC, Live, Original).",
     "section.ptz": "CONTROLES PTZ Y ZOOM",
+    "section.ptz_tip": "Control motorizado de movimiento: Paneo horizontal, inclinación vertical, zoom digital y recentrado del gimbal.",
     "section.gestures": "GESTOS",
 
     // Camera Modes & Power
