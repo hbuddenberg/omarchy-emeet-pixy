@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "hbuddenberg.emeet-pixy",
   "name": "EMEET PIXY",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "hbuddenberg",
   "license": "MIT",
   "description": "EMEET PIXY camera status and control widget for Omarchy.",
