@@ -28,7 +28,10 @@ var strings = {
     "section.ptz": "PTZ & ZOOM CONTROLS",
     "section.gestures": "GESTURES",
 
-    // Camera Modes
+    // Camera Modes & Power
+    "camera.power_title": "EMEET PIXY Camera",
+    "camera.power_on_desc": "Connected to system",
+    "camera.power_off_desc": "Completely off (Disconnected)",
     "mode.privacy": "Privacy",
     "mode.tracking": "Tracking",
     "mode.standby": "Standby",
@@ -95,7 +98,10 @@ var strings = {
     "section.ptz": "CONTROLES PTZ Y ZOOM",
     "section.gestures": "GESTOS",
 
-    // Camera Modes
+    // Camera Modes & Power
+    "camera.power_title": "Cámara EMEET PIXY",
+    "camera.power_on_desc": "Conectada al sistema",
+    "camera.power_off_desc": "Apagada por software (Desconectada)",
     "mode.privacy": "Privacidad",
     "mode.tracking": "Tracking",
     "mode.standby": "Reposo",

@@ -13,6 +13,7 @@ Provides real-time camera status, privacy controls, PTZ presets, and interactive
 ## Features
 
 - **Interactive Control Menu (`KeyboardPanel`):** Left-click the widget to open a Wayland-native layer-shell control panel featuring:
+  - **Full Software Power Off:** 1-click USB soft-disconnect toggle to completely remove the camera device from the Linux kernel and applications (removes `/dev/video*`), re-enabling instantly when switched on.
   - **Camera Modes:** Switch between Privacy, AI Face Tracking, and Standby (Idle).
   - **Auto Automation Strategies:** Toggle between `Full` (tracking + NC + privacy on call end), `Tracking-Only`, `Privacy-Only`, or `Off` (manual).
   - **Microphone Audio Modes & Mute:** Hardware noise cancellation modes (Noise Cancelling, Live, Original) and 1-click PipeWire microphone mute toggle with live state tracking.

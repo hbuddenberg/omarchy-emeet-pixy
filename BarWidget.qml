@@ -144,7 +144,13 @@ BarWidget {
     return tip
   }
 
+  property bool hardwarePowered: true
+
   function applyStatus(output) {
+    if (!root.hardwarePowered) {
+      root.cameraMode = "offline"
+      return
+    }
     try {
       var trimmed = (output || "").trim()
       if (!trimmed) {
@@ -175,6 +181,9 @@ BarWidget {
     if (!statusProcess.running) {
       statusProcess.running = true
     }
+    if (!powerStatusProcess.running) {
+      powerStatusProcess.running = true
+    }
     if (!root.emeetSource && !micStatusProcess.running) {
       micStatusProcess.running = true
     }
@@ -191,6 +200,34 @@ BarWidget {
     stdout: StdioCollector {
       waitForEnd: true
       onStreamFinished: root.applyStatus(text)
+    }
+  }
+
+  Process {
+    id: powerStatusProcess
+    command: ["emeet-pixy-power", "status"]
+    stdout: StdioCollector {
+      id: powerCollector
+      waitForEnd: true
+      onStreamFinished: {
+        var res = (powerCollector.text || "").trim().toLowerCase()
+        if (res === "on") {
+          root.hardwarePowered = true
+        } else if (res === "off") {
+          root.hardwarePowered = false
+          root.cameraMode = "offline"
+        }
+      }
+    }
+  }
+
+  Timer {
+    id: reconnectTimer
+    interval: 800
+    repeat: false
+    onTriggered: {
+      root.execute(["emeet-pixy", "probe"])
+      root.pollState()
     }
   }
 
@@ -322,9 +359,29 @@ BarWidget {
         text: root.t("section.camera_mode")
       }
 
+      Toggle {
+        width: parent.width
+        label: root.t("camera.power_title")
+        description: root.hardwarePowered ? root.t("camera.power_on_desc") : root.t("camera.power_off_desc")
+        checked: root.hardwarePowered
+        onClicked: {
+          root.hardwarePowered = !root.hardwarePowered
+          if (root.hardwarePowered) {
+            root.execute(["emeet-pixy-power", "on"])
+            reconnectTimer.restart()
+          } else {
+            root.execute(["emeet-pixy-power", "off"])
+            root.cameraMode = "offline"
+          }
+          powerStatusProcess.running = true
+        }
+      }
+
       RowLayout {
         width: parent.width
         spacing: Style.space(6)
+        opacity: root.hardwarePowered ? 1.0 : 0.5
+        enabled: root.hardwarePowered
 
         Button {
           Layout.fillWidth: true

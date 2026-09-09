@@ -1,0 +1,79 @@
+#!/bin/bash
+# emeet-pixy-power: Software power / USB authorization control for EMEET PIXY webcam
+
+find_device() {
+  for dev in /sys/bus/usb/devices/*; do
+    if [ -f "$dev/idVendor" ] && [ -f "$dev/idProduct" ]; then
+      local v p
+      v=$(cat "$dev/idVendor" 2>/dev/null)
+      p=$(cat "$dev/idProduct" 2>/dev/null)
+      if [ "$v" = "328f" ] && [ "$p" = "00c0" ]; then
+        echo "$dev"
+        return 0
+      fi
+    fi
+  done
+  return 1
+}
+
+cmd="${1:-status}"
+dev=$(find_device)
+
+if [ -z "$dev" ]; then
+  echo "offline"
+  exit 1
+fi
+
+auth_file="$dev/authorized"
+
+case "$cmd" in
+  status)
+    if [ -f "$auth_file" ]; then
+      val=$(cat "$auth_file" 2>/dev/null)
+      if [ "$val" = "1" ]; then
+        echo "on"
+      else
+        echo "off"
+      fi
+    else
+      echo "offline"
+    fi
+    ;;
+  off)
+    if [ -w "$auth_file" ]; then
+      echo 0 > "$auth_file"
+      echo "off"
+    else
+      echo "Error: $auth_file is not writable" >&2
+      exit 1
+    fi
+    ;;
+  on)
+    if [ -w "$auth_file" ]; then
+      echo 1 > "$auth_file"
+      echo "on"
+    else
+      echo "Error: $auth_file is not writable" >&2
+      exit 1
+    fi
+    ;;
+  toggle)
+    if [ -f "$auth_file" ] && [ -w "$auth_file" ]; then
+      val=$(cat "$auth_file" 2>/dev/null)
+      if [ "$val" = "1" ]; then
+        echo 0 > "$auth_file"
+        echo "off"
+      else
+        echo 1 > "$auth_file"
+        echo "on"
+      fi
+    else
+      echo "Error: $auth_file is not writable or missing" >&2
+      exit 1
+    fi
+    ;;
+  *)
+    echo "Usage: $0 {status|on|off|toggle}" >&2
+    exit 1
+    ;;
+esac
