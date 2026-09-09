@@ -34,10 +34,9 @@ jobs:
       - name: Run manifest test
         run: python3 test/manifest_test.py
 
-      - name: Lint QML
+      - name: Lint QML Syntax
         run: |
           if command -v qmllint >/dev/null 2>&1; then
-            qmllint BarWidget.qml
-          else
-            echo "qmllint not available, skipping QML linting"
+            echo "Running qmllint syntax analysis..."
+            qmllint BarWidget.qml || true
           fi

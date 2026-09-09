@@ -22,4 +22,13 @@ for entry_point_name, relative_file in manifest["entryPoints"].items():
 bar_widget = manifest.get("barWidget", {})
 assert bar_widget.get("defaultSection") in ("left", "center", "right"), "defaultSection invalid"
 
-print("All manifest assertions passed successfully!")
+# QML file validation
+qml_path = root / "BarWidget.qml"
+assert qml_path.is_file(), "BarWidget.qml not found"
+qml_text = qml_path.read_text()
+assert "moduleName: \"hbuddenberg.emeet-pixy\"" in qml_text, "moduleName missing in BarWidget.qml"
+assert "BarWidget {" in qml_text, "BarWidget root element missing"
+assert "WidgetButton {" in qml_text, "WidgetButton element missing"
+assert qml_text.count("{") == qml_text.count("}"), "Unbalanced braces in BarWidget.qml"
+
+print("All manifest and QML assertions passed successfully!")
