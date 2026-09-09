@@ -69,9 +69,11 @@ BarWidget {
     return ""
   }
 
+  readonly property bool showAutoBadge: root.setting("showAutoBadge", false)
+
   readonly property string displayText: {
     if (root.iconOnly) return root.glyph
-    if (root.autoBadge !== "") {
+    if (root.showAutoBadge && root.autoBadge !== "") {
       return root.glyph + " " + root.stateLabel + " [" + root.autoBadge + "]"
     }
     return root.glyph + " " + root.stateLabel

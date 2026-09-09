@@ -19,7 +19,8 @@
     "allowMultiple": false,
     "defaultSection": "right",
     "defaults": {
-      "language": "auto"
+      "language": "auto",
+      "showAutoBadge": false
     },
     "schema": [
       {
@@ -28,6 +29,12 @@
         "label": "Language",
         "enum": ["auto", "en", "es"],
         "defaultValue": "auto"
+      },
+      {
+        "key": "showAutoBadge",
+        "type": "boolean",
+        "label": "Show Auto Mode badge on bar",
+        "defaultValue": false
       }
     ]
   }

@@ -89,6 +89,7 @@ The widget supports inline settings in `shell.json`:
 
 - `iconOnly` (boolean, default: `false`): When `true`, displays only the status glyph without the state label.
 - `language` (string, default: `"auto"`): Interface language. Options: `"auto"` (system locale), `"en"`, `"es"`.
+- `showAutoBadge` (boolean, default: `false`): When `true`, displays auto mode indicators (`[AUTO]`, `[TRK]`, `[PRV]`) beside the camera state on the bar.
 
 ---
 
