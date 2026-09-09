@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "hbuddenberg.emeet-pixy",
+  "name": "EMEET PIXY",
+  "version": "1.0.0",
+  "author": "hbuddenberg",
+  "license": "MIT",
+  "description": "EMEET PIXY camera status and control widget for Omarchy.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "EMEET PIXY",
+    "description": "Camera status, privacy toggle, and PTZ controls",
+    "category": "Tools",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
