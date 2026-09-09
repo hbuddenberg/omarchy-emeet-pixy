@@ -44,6 +44,9 @@ var strings = {
     "auto.off_tip": "Manual mode, no call automation",
 
     // Audio Modes & Microphone
+    "audio.mic_title": "EMEET PIXY Microphone",
+    "audio.mic_active_desc": "On (Capturing audio)",
+    "audio.mic_muted_desc": "Off (Muted)",
     "audio.nc": "Noise Cancelling",
     "audio.live": "Live",
     "audio.original": "Original",
@@ -108,6 +111,9 @@ var strings = {
     "auto.off_tip": "Sin automatizaciones de llamada",
 
     // Audio Modes & Microphone
+    "audio.mic_title": "Micrófono EMEET PIXY",
+    "audio.mic_active_desc": "Encendido (Capturando)",
+    "audio.mic_muted_desc": "Apagado (Silenciado)",
     "audio.nc": "Reducción Ruido",
     "audio.live": "Live",
     "audio.original": "Original",

@@ -198,9 +198,10 @@ BarWidget {
     id: micStatusProcess
     command: ["sh", "-c", "pactl list sources | awk '/Name: .*EMEET/{flag=1} flag && /Mute:/{print $2; exit}'"]
     stdout: StdioCollector {
+      id: micCollector
       waitForEnd: true
-      onStreamFinished: function() {
-        var res = (text || "").trim().toLowerCase()
+      onStreamFinished: {
+        var res = (micCollector.text || "").trim().toLowerCase()
         if (res === "yes") {
           root.fallbackMicMuted = true
         } else if (res === "no") {
@@ -449,20 +450,12 @@ BarWidget {
         }
       }
 
-      RowLayout {
+      Toggle {
         width: parent.width
-        spacing: Style.space(6)
-
-        Button {
-          Layout.fillWidth: true
-          bordered: true
-          iconText: root.isMicMuted ? "󰍭" : "󰍬"
-          text: root.isMicMuted ? root.t("audio.mic_muted") : root.t("audio.mic_active")
-          tooltipText: root.isMicMuted ? root.t("audio.mic_unmute_tip") : root.t("audio.mic_mute_tip")
-          selected: root.isMicMuted
-          foreground: root.isMicMuted ? Color.urgent : Color.foreground
-          onClicked: root.toggleMicMute()
-        }
+        label: root.t("audio.mic_title")
+        description: root.isMicMuted ? root.t("audio.mic_muted_desc") : root.t("audio.mic_active_desc")
+        checked: !root.isMicMuted
+        onClicked: root.toggleMicMute()
       }
 
       PanelSeparator {}
