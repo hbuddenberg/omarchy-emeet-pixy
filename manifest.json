@@ -17,6 +17,18 @@
     "description": "Camera status, privacy toggle, and PTZ controls",
     "category": "Tools",
     "allowMultiple": false,
-    "defaultSection": "right"
+    "defaultSection": "right",
+    "defaults": {
+      "language": "auto"
+    },
+    "schema": [
+      {
+        "key": "language",
+        "type": "string",
+        "label": "Language",
+        "enum": ["auto", "en", "es"],
+        "defaultValue": "auto"
+      }
+    ]
   }
 }

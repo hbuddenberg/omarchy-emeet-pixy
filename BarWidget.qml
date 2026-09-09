@@ -4,10 +4,17 @@ import Quickshell
 import Quickshell.Io
 import qs.Commons
 import qs.Ui
+import "i18n.js" as I18n
 
 BarWidget {
   id: root
   moduleName: "hbuddenberg.emeet-pixy"
+
+  readonly property string currentLang: I18n.resolveLanguage(root.setting("language", "auto"), Qt.locale().name)
+
+  function t(key) {
+    return I18n.t(key, root.currentLang)
+  }
 
   property string cameraMode: "offline"
   property string audioMode: "nc"
@@ -79,17 +86,18 @@ BarWidget {
   }
 
   readonly property string fullTooltip: {
-    var tip = "EMEET PIXY Camera"
-    tip += "\n• Estado: " + root.cameraMode
-    tip += "\n• Modo Auto: " + root.autoMode
-    tip += "\n• Audio: " + root.audioMode
-    tip += "\n• Gestos: " + (root.gestureEnabled ? "activos" : "inactivos")
+    if (root.isOffline) return root.t("tip.offline")
+    var tip = root.t("header.title")
+    tip += "\n• " + (root.isTracking ? root.t("tip.tracking") : (root.isPrivacy ? root.t("tip.privacy") : root.t("tip.standby")))
+    tip += "\n• " + root.t("tip.auto_mode") + root.autoMode
+    tip += "\n• " + root.t("tip.audio_mode") + root.audioMode
+    tip += "\n• " + (root.gestureEnabled ? root.t("tip.gestures_on") : root.t("tip.gestures_off"))
     tip += "\n• Zoom: " + root.zoomVal + "%"
-    tip += "\n• En llamada: " + (root.inCall ? "sí" : "no")
-    tip += "\n\n🖱️ Clic izquierdo: Abrir panel de control"
-    tip += "\n🖱️ Clic derecho: Alternar privacidad"
-    tip += "\n🖱️ Clic central: Centrar cámara"
-    tip += "\n🔄 Rueda: Zoom +/-"
+    tip += "\n• " + (root.inCall ? root.t("tip.call_active") : root.t("tip.call_inactive"))
+    tip += "\n\n🖱️ " + root.t("tip.hint_left")
+    tip += "\n🖱️ " + root.t("tip.hint_right")
+    tip += "\n🖱️ " + root.t("tip.hint_middle")
+    tip += "\n🔄 " + root.t("tip.hint_wheel")
     return tip
   }
 
@@ -218,7 +226,7 @@ BarWidget {
         spacing: Style.space(6)
 
         Text {
-          text: "📹 EMEET PIXY"
+          text: "📹 " + root.t("header.title")
           color: Color.foreground
           font.family: Style.font.family
           font.pixelSize: Style.font.heading
@@ -248,7 +256,7 @@ BarWidget {
 
       // Section: Camera Mode
       PanelSectionHeader {
-        text: "MODO DE CÁMARA"
+        text: root.t("section.camera_mode")
       }
 
       RowLayout {
@@ -259,7 +267,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: ""
-          text: "Privacidad"
+          text: root.t("mode.privacy")
           selected: root.isPrivacy
           onClicked: root.execute(["emeet-pixy", "privacy"])
         }
@@ -268,7 +276,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: ""
-          text: "Tracking"
+          text: root.t("mode.tracking")
           selected: root.isTracking
           onClicked: root.execute(["emeet-pixy", "track"])
         }
@@ -277,7 +285,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: ""
-          text: "Reposo"
+          text: root.t("mode.standby")
           selected: root.isIdle
           onClicked: root.execute(["emeet-pixy", "idle"])
         }
@@ -287,7 +295,7 @@ BarWidget {
 
       // Section: Automation / Auto Mode
       PanelSectionHeader {
-        text: "AUTOMATIZACIÓN (MODO AUTO)"
+        text: root.t("section.auto_mode")
       }
 
       RowLayout {
@@ -298,8 +306,8 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "󰚩"
-          text: "Completo"
-          tooltipText: "Seguimiento + NC + Privacidad al colgar"
+          text: root.t("auto.full")
+          tooltipText: root.t("auto.full_tip")
           selected: root.autoMode === "full"
           onClicked: root.execute(["emeet-pixy", "auto", "full"])
         }
@@ -308,8 +316,8 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "󰄀"
-          text: "Tracking"
-          tooltipText: "Solo seguimiento facial"
+          text: root.t("auto.tracking")
+          tooltipText: root.t("auto.tracking_tip")
           selected: root.autoMode === "tracking-only"
           onClicked: root.execute(["emeet-pixy", "auto", "tracking-only"])
         }
@@ -323,8 +331,8 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "󰄂"
-          text: "Privacidad"
-          tooltipText: "Solo tapar lente al colgar"
+          text: root.t("auto.privacy")
+          tooltipText: root.t("auto.privacy_tip")
           selected: root.autoMode === "privacy-only"
           onClicked: root.execute(["emeet-pixy", "auto", "privacy-only"])
         }
@@ -333,8 +341,8 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "󰅙"
-          text: "Desactivado"
-          tooltipText: "Sin automatizaciones de llamada"
+          text: root.t("auto.off")
+          tooltipText: root.t("auto.off_tip")
           selected: root.autoMode === "off"
           onClicked: root.execute(["emeet-pixy", "auto", "off"])
         }
@@ -344,7 +352,7 @@ BarWidget {
 
       // Section: Audio Mode
       PanelSectionHeader {
-        text: "MICRÓFONO Y AUDIO"
+        text: root.t("section.audio_mode")
       }
 
       RowLayout {
@@ -355,7 +363,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "󰍬"
-          text: "Reducción Ruido"
+          text: root.t("audio.nc")
           selected: root.audioMode === "nc"
           onClicked: root.execute(["emeet-pixy", "audio", "nc"])
         }
@@ -364,7 +372,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "󰍬"
-          text: "Live"
+          text: root.t("audio.live")
           selected: root.audioMode === "live"
           onClicked: root.execute(["emeet-pixy", "audio", "live"])
         }
@@ -373,7 +381,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "󰍬"
-          text: "Original"
+          text: root.t("audio.original")
           selected: root.audioMode === "org"
           onClicked: root.execute(["emeet-pixy", "audio", "org"])
         }
@@ -383,7 +391,7 @@ BarWidget {
 
       // Section: PTZ & Zoom
       PanelSectionHeader {
-        text: "CONTROLES PTZ Y ZOOM (" + root.zoomVal + "%)"
+        text: root.t("section.ptz") + " (" + root.zoomVal + "%)"
       }
 
       RowLayout {
@@ -394,7 +402,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "🎯"
-          text: "Centrar"
+          text: root.t("ptz.center")
           onClicked: root.execute(["emeet-pixy", "center"])
         }
 
@@ -402,7 +410,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "🔍"
-          text: "Zoom +"
+          text: root.t("ptz.zoom_in")
           onClicked: root.execute(["emeet-pixy", "zoom", "rel+10"])
         }
 
@@ -410,7 +418,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "🔍"
-          text: "Zoom -"
+          text: root.t("ptz.zoom_out")
           onClicked: root.execute(["emeet-pixy", "zoom", "rel-10"])
         }
       }
@@ -422,28 +430,28 @@ BarWidget {
         Button {
           Layout.fillWidth: true
           bordered: true
-          text: "◄ Izquierda"
+          text: root.t("ptz.left")
           onClicked: root.execute(["emeet-pixy", "pan", "rel-15"])
         }
 
         Button {
           Layout.fillWidth: true
           bordered: true
-          text: "▲ Arriba"
+          text: root.t("ptz.up")
           onClicked: root.execute(["emeet-pixy", "tilt", "rel+10"])
         }
 
         Button {
           Layout.fillWidth: true
           bordered: true
-          text: "▼ Abajo"
+          text: root.t("ptz.down")
           onClicked: root.execute(["emeet-pixy", "tilt", "rel-10"])
         }
 
         Button {
           Layout.fillWidth: true
           bordered: true
-          text: "► Derecha"
+          text: root.t("ptz.right")
           onClicked: root.execute(["emeet-pixy", "pan", "rel+15"])
         }
       }
@@ -459,7 +467,7 @@ BarWidget {
           Layout.fillWidth: true
           bordered: true
           iconText: "✋"
-          text: root.gestureEnabled ? "Control Gestual: Activo" : "Control Gestual: Inactivo"
+          text: root.gestureEnabled ? root.t("gesture.active") : root.t("gesture.inactive")
           selected: root.gestureEnabled
           onClicked: root.execute(["emeet-pixy", "toggle-gesture"])
         }
