@@ -12,18 +12,23 @@ Provides real-time camera status, privacy controls, PTZ presets, and interactive
 
 ## Features
 
-- **Real-Time Camera State:** Dynamically monitors daemon status, audio mode, auto-framing, and active calls.
-- **Color-Coded Status Indicators:**
-  - ` CAM` (Emerald): Camera tracking active.
-  - ` IDLE` (Amber): Standby / idle mode.
-  - ` OFF` (Red): Privacy mode active.
+- **Interactive Control Menu (`PopupCard`):** Left-click the widget to open a control panel featuring:
+  - **Camera Modes:** Switch between Privacy, AI Face Tracking, and Standby (Idle).
+  - **Auto Automation Strategies:** Toggle between `Full` (tracking + NC + privacy on call end), `Tracking-Only`, `Privacy-Only`, or `Off` (manual).
+  - **Microphone Audio Modes:** Noise Cancellation (`nc`), Live (`live`), and Original (`org`).
+  - **Full PTZ & Zoom Controls:** Interactive Pan left/right, Tilt up/down, Zoom in/out, and 1-click Center.
+  - **AI Gesture Controls:** Toggle gesture recognition on or off.
+- **Bar Status & Auto Indicators:**
+  - ` CAM [AUTO]` (Emerald): Active tracking with automation enabled.
+  - ` IDLE` (Amber): Standby mode.
+  - ` OFF [AUTO]` (Red): Hardware privacy shutter active.
   - ` ---` (Muted): Camera offline or daemon disconnected.
-- **Interactive Mouse Controls:**
-  - **Left Click:** Toggle privacy mode (`emeet-pixy toggle-privacy`).
-  - **Right Click:** Toggle auto mode (`emeet-pixy toggle-auto`).
-  - **Middle Click:** Center camera and reset PTZ (`emeet-pixy center`).
-  - **Scroll Wheel:** Zoom in / out (`emeet-pixy zoom rel±10`).
-- **Detailed Tooltip:** Hover to inspect daemon state, active audio configuration, auto-tracking mode, and call detection.
+- **Fast Mouse Shortcuts:**
+  - **Left Click:** Open / close the interactive control menu.
+  - **Right Click:** Quick-toggle privacy mode (`toggle-privacy`).
+  - **Middle Click:** Quick-center camera and reset PTZ (`center`).
+  - **Scroll Wheel:** Dynamic zoom adjustment (`zoom rel±10`).
+- **Comprehensive Tooltip:** Hover to inspect real-time daemon state, active audio preset, auto mode, call detection, and gestures.
 
 ---
 
