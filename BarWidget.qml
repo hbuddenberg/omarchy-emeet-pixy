@@ -20,9 +20,18 @@ BarWidget {
   property string devicePath: ""
 
   property bool popupOpen: false
+  readonly property bool opened: popupOpen
+
+  function open() {
+    root.popupOpen = true
+  }
 
   function close() {
     root.popupOpen = false
+  }
+
+  function toggle() {
+    root.popupOpen = !root.popupOpen
   }
 
   readonly property bool isTracking: cameraMode === "tracking"
@@ -118,12 +127,7 @@ BarWidget {
   }
 
   function execute(cmdArgs) {
-    if (root.bar && typeof root.bar.run === "function") {
-      root.bar.run(cmdArgs.join(" "))
-    } else {
-      actionProcess.command = cmdArgs
-      actionProcess.running = true
-    }
+    Quickshell.execDetached(cmdArgs)
     fastPollTimer.start()
   }
 
@@ -134,11 +138,6 @@ BarWidget {
       waitForEnd: true
       onStreamFinished: root.applyStatus(text)
     }
-  }
-
-  Process {
-    id: actionProcess
-    onExited: fastPollTimer.start()
   }
 
   Timer {
@@ -164,6 +163,7 @@ BarWidget {
 
   WidgetButton {
     id: btn
+    anchors.fill: parent
     bar: root.bar
     text: root.displayText
     tooltipText: root.fullTooltip
@@ -185,7 +185,7 @@ BarWidget {
       } else if (button === Qt.MiddleButton) {
         root.execute(["emeet-pixy", "center"])
       } else {
-        root.popupOpen = !root.popupOpen
+        root.toggle()
       }
     }
 
@@ -198,13 +198,13 @@ BarWidget {
     }
   }
 
-  PopupCard {
+  KeyboardPanel {
     id: popup
-    anchorItem: root
+    anchorItem: btn
     bar: root.bar
     owner: root
     open: root.popupOpen
-    contentWidth: popup.fittedContentWidth(Style.space(330))
+    contentWidth: popup.fittedContentWidth(Style.space(340))
     contentHeight: popup.fittedContentHeight(contentCol.implicitHeight)
 
     Column {
@@ -290,13 +290,12 @@ BarWidget {
         text: "AUTOMATIZACIÓN (MODO AUTO)"
       }
 
-      Grid {
-        columns: 2
-        spacing: Style.space(6)
+      RowLayout {
         width: parent.width
+        spacing: Style.space(6)
 
         Button {
-          width: Math.floor((parent.width - Style.space(6)) / 2)
+          Layout.fillWidth: true
           bordered: true
           iconText: "󰚩"
           text: "Completo"
@@ -306,27 +305,32 @@ BarWidget {
         }
 
         Button {
-          width: Math.floor((parent.width - Style.space(6)) / 2)
+          Layout.fillWidth: true
           bordered: true
           iconText: "󰄀"
-          text: "Solo Tracking"
-          tooltipText: "Solo seguimiento facial automático"
+          text: "Tracking"
+          tooltipText: "Solo seguimiento facial"
           selected: root.autoMode === "tracking-only"
           onClicked: root.execute(["emeet-pixy", "auto", "tracking-only"])
         }
+      }
+
+      RowLayout {
+        width: parent.width
+        spacing: Style.space(6)
 
         Button {
-          width: Math.floor((parent.width - Style.space(6)) / 2)
+          Layout.fillWidth: true
           bordered: true
           iconText: "󰄂"
-          text: "Solo Privacidad"
+          text: "Privacidad"
           tooltipText: "Solo tapar lente al colgar"
           selected: root.autoMode === "privacy-only"
           onClicked: root.execute(["emeet-pixy", "auto", "privacy-only"])
         }
 
         Button {
-          width: Math.floor((parent.width - Style.space(6)) / 2)
+          Layout.fillWidth: true
           bordered: true
           iconText: "󰅙"
           text: "Desactivado"
