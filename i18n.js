@@ -10,6 +10,8 @@ var strings = {
     "tip.call_active": "In call: Yes",
     "tip.call_inactive": "In call: No",
     "tip.audio_mode": "Audio mode: ",
+    "tip.mic_active": "Microphone: Live",
+    "tip.mic_muted": "Microphone: Off (Muted)",
     "tip.auto_mode": "Auto mode: ",
     "tip.gestures_on": "Gestures: Enabled",
     "tip.gestures_off": "Gestures: Disabled",
@@ -41,10 +43,14 @@ var strings = {
     "auto.off": "Off",
     "auto.off_tip": "Manual mode, no call automation",
 
-    // Audio Modes
+    // Audio Modes & Microphone
     "audio.nc": "Noise Cancelling",
     "audio.live": "Live",
     "audio.original": "Original",
+    "audio.mic_active": "Microphone: Live",
+    "audio.mic_muted": "Microphone: Off",
+    "audio.mic_mute_tip": "Click to turn off / mute camera microphone",
+    "audio.mic_unmute_tip": "Click to turn on / unmute camera microphone",
 
     // PTZ & Zoom Controls
     "ptz.center": "Center",
@@ -68,6 +74,8 @@ var strings = {
     "tip.call_active": "En llamada: Sí",
     "tip.call_inactive": "En llamada: No",
     "tip.audio_mode": "Modo de audio: ",
+    "tip.mic_active": "Micrófono: Activo",
+    "tip.mic_muted": "Micrófono: Apagado (Silenciado)",
     "tip.auto_mode": "Modo auto: ",
     "tip.gestures_on": "Control gestual: Activado",
     "tip.gestures_off": "Control gestual: Desactivado",
@@ -99,10 +107,14 @@ var strings = {
     "auto.off": "Desactivado",
     "auto.off_tip": "Sin automatizaciones de llamada",
 
-    // Audio Modes
+    // Audio Modes & Microphone
     "audio.nc": "Reducción Ruido",
     "audio.live": "Live",
     "audio.original": "Original",
+    "audio.mic_active": "Micrófono: Activo",
+    "audio.mic_muted": "Micrófono: Apagado",
+    "audio.mic_mute_tip": "Clic para apagar / silenciar el micrófono",
+    "audio.mic_unmute_tip": "Clic para reactivar el micrófono",
 
     // PTZ & Zoom Controls
     "ptz.center": "Centrar",

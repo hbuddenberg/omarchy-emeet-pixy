@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import Quickshell.Services.Pipewire
 import qs.Commons
 import qs.Ui
 import "i18n.js" as I18n
@@ -87,12 +88,52 @@ BarWidget {
     return Color.foreground
   }
 
+  readonly property var pwNodes: Pipewire.nodes ? Pipewire.nodes.values : []
+  readonly property var emeetSource: {
+    for (var i = 0; i < root.pwNodes.length; i++) {
+      var n = root.pwNodes[i]
+      if (n && !n.isSink && !n.isStream) {
+        var str = ((n.name || "") + " " + (n.description || "") + " " + (n.nickname || "") + " " + (n.nick || "")).toLowerCase()
+        if (str.indexOf("emeet") !== -1 || str.indexOf("pixy") !== -1) {
+          return n
+        }
+      }
+    }
+    return null
+  }
+
+  PwObjectTracker {
+    objects: root.emeetSource ? [root.emeetSource] : []
+  }
+
+  property bool fallbackMicMuted: false
+
+  readonly property bool isMicMuted: {
+    if (root.emeetSource && root.emeetSource.audio) {
+      return root.emeetSource.audio.muted
+    }
+    return root.fallbackMicMuted
+  }
+
+  function toggleMicMute() {
+    if (root.emeetSource && root.emeetSource.audio) {
+      root.emeetSource.audio.muted = !root.emeetSource.audio.muted
+    } else {
+      root.fallbackMicMuted = !root.fallbackMicMuted
+      Quickshell.execDetached(["sh", "-c", "SRC=$(pactl list sources short | awk '$2 ~ /EMEET/ {print $2; exit}'); [ -n \"$SRC\" ] && pactl set-source-mute \"$SRC\" toggle"])
+    }
+    if (!micStatusProcess.running) {
+      micStatusProcess.running = true
+    }
+  }
+
   readonly property string fullTooltip: {
     if (root.isOffline) return root.t("tip.offline")
     var tip = root.t("header.title")
     tip += "\n• " + (root.isTracking ? root.t("tip.tracking") : (root.isPrivacy ? root.t("tip.privacy") : root.t("tip.standby")))
     tip += "\n• " + root.t("tip.auto_mode") + root.autoMode
     tip += "\n• " + root.t("tip.audio_mode") + root.audioMode
+    tip += "\n• " + (root.isMicMuted ? root.t("tip.mic_muted") : root.t("tip.mic_active"))
     tip += "\n• " + (root.gestureEnabled ? root.t("tip.gestures_on") : root.t("tip.gestures_off"))
     tip += "\n• Zoom: " + root.zoomVal + "%"
     tip += "\n• " + (root.inCall ? root.t("tip.call_active") : root.t("tip.call_inactive"))
@@ -134,6 +175,9 @@ BarWidget {
     if (!statusProcess.running) {
       statusProcess.running = true
     }
+    if (!root.emeetSource && !micStatusProcess.running) {
+      micStatusProcess.running = true
+    }
   }
 
   function execute(cmdArgs) {
@@ -147,6 +191,22 @@ BarWidget {
     stdout: StdioCollector {
       waitForEnd: true
       onStreamFinished: root.applyStatus(text)
+    }
+  }
+
+  Process {
+    id: micStatusProcess
+    command: ["sh", "-c", "pactl list sources | awk '/Name: .*EMEET/{flag=1} flag && /Mute:/{print $2; exit}'"]
+    stdout: StdioCollector {
+      waitForEnd: true
+      onStreamFinished: function() {
+        var res = (text || "").trim().toLowerCase()
+        if (res === "yes") {
+          root.fallbackMicMuted = true
+        } else if (res === "no") {
+          root.fallbackMicMuted = false
+        }
+      }
     }
   }
 
@@ -386,6 +446,22 @@ BarWidget {
           text: root.t("audio.original")
           selected: root.audioMode === "org"
           onClicked: root.execute(["emeet-pixy", "audio", "org"])
+        }
+      }
+
+      RowLayout {
+        width: parent.width
+        spacing: Style.space(6)
+
+        Button {
+          Layout.fillWidth: true
+          bordered: true
+          iconText: root.isMicMuted ? "󰍭" : "󰍬"
+          text: root.isMicMuted ? root.t("audio.mic_muted") : root.t("audio.mic_active")
+          tooltipText: root.isMicMuted ? root.t("audio.mic_unmute_tip") : root.t("audio.mic_mute_tip")
+          selected: root.isMicMuted
+          foreground: root.isMicMuted ? Color.urgent : Color.foreground
+          onClicked: root.toggleMicMute()
         }
       }
 

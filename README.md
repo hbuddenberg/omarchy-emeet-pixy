@@ -15,7 +15,7 @@ Provides real-time camera status, privacy controls, PTZ presets, and interactive
 - **Interactive Control Menu (`KeyboardPanel`):** Left-click the widget to open a Wayland-native layer-shell control panel featuring:
   - **Camera Modes:** Switch between Privacy, AI Face Tracking, and Standby (Idle).
   - **Auto Automation Strategies:** Toggle between `Full` (tracking + NC + privacy on call end), `Tracking-Only`, `Privacy-Only`, or `Off` (manual).
-  - **Microphone Audio Modes:** Noise Cancellation (`nc`), Live (`live`), and Original (`org`).
+  - **Microphone Audio Modes & Mute:** Hardware noise cancellation modes (Noise Cancelling, Live, Original) and 1-click PipeWire microphone mute toggle with live state tracking.
   - **Full PTZ & Zoom Controls:** Interactive Pan left/right, Tilt up/down, Zoom in/out, and 1-click Center.
   - **AI Gesture Controls:** Toggle gesture recognition on or off.
 - **Internationalization (i18n):** Native English and Spanish support with automatic system locale detection (`es_*` / `en_*`) and manual configuration override.
