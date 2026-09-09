@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate Plugin & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Qt6 QML Lint tool
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qml-tools jq
+
+      - name: Run manifest test
+        run: python3 test/manifest_test.py
+
+      - name: Lint QML
+        run: qmllint BarWidget.qml

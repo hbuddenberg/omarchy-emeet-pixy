@@ -5,6 +5,7 @@ Native [Omarchy](https://omarchy.org/) Quickshell bar widget for the [EMEET PIXY
 Provides real-time camera status, privacy controls, PTZ presets, and interactive gestures directly from the Omarchy status bar.
 
 ![Omarchy Plugin](https://img.shields.io/badge/omarchy-plugin-blue?style=flat-square)
+[![CI](https://github.com/hbuddenberg/omarchy-emeet-pixy/actions/workflows/ci.yml/badge.svg)](https://github.com/hbuddenberg/omarchy-emeet-pixy/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
 ---
